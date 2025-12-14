@@ -1,0 +1,10 @@
+.demo {
+      filter:
+        drop-shadow(0 0 180px rgb(255, 0, 0))
+        drop-shadow(0 0 209px rgb(0, 255, 51))
+        drop-shadow(0 0 30px rgb(121, 4, 255))
+        drop-shadow(0 0 200px rgb(0, 255, 51));
+        background-color: rgba(0, 0, 0, 0.456);
+        border-radius: 100%;
+        
+}
