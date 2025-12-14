@@ -28,7 +28,7 @@ const DashBoard = () => {
 
   const changeHandler = async () => {
     try {
-      await fetch("http://localhost:5000/api/users/dashboard/logout", {
+      await fetch("https://chatapp-4yro.onrender.com/api/users/dashboard/logout", {
         method: "POST",
         credentials: "include",
       });
