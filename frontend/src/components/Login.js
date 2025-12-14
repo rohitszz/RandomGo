@@ -29,7 +29,6 @@ const Login = ({isLoggedIn, setIsLoggedIn}) => {
        const data = await res.json();
    if(data.success){
     setIsLoggedIn(true);
-    console.log("success in fetching");
     navigate("/dashboard", { state: { token: data.token } });
    }
    else {
