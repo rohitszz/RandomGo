@@ -19,7 +19,7 @@ function App() {
    
     async function checkLogin(){
       try{
-        const res = await fetch("https://chatapp-4yro.onrender.com/api/users/authVerify", {
+        const res = await fetch("https://chatapp-backend-1rq1.onrender.com/api/users/authVerify", {
           method: "GET",
           credentials: "include",
         });
