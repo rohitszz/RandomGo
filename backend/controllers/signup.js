@@ -188,8 +188,8 @@ exports.verifyOtp = async (req, res) => {
 
         res.cookie("signupAuthToken", signupToken, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax", 
+            secure: true,
+            sameSite: "none", 
             path:"/", 
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
