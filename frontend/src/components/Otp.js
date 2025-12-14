@@ -25,7 +25,7 @@ const Otp = ({copyEmail, setcopyEmail, otpVerified, setOtpVerified}) => {
   async function verificationHandler(){
    
     try{
-        const res = await fetch("http://localhost:5000/api/users/signup/sendotp", {
+        const res = await fetch("https://chatapp-4yro.onrender.com/api/users/signup/sendotp", {
         method: "POST",
         headers: { "Content-Type": "application/json", 
             "Authorization": `Bearer ${token}`},
@@ -43,7 +43,7 @@ const Otp = ({copyEmail, setcopyEmail, otpVerified, setOtpVerified}) => {
   async function verifyOtp(e){
     e.preventDefault();
     try{
-    const res = await fetch("http://localhost:5000/api/users/signup/verifyotp", {
+    const res = await fetch("https://chatapp-4yro.onrender.com/api/users/signup/verifyotp", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`},
         credentials: "include", 
