@@ -188,6 +188,7 @@ const DashBoard = () => {
     if (!socket.current) { 
       socket.current = io("https://chatapp-backend-1rq1.onrender.com", {
         transports: ["websocket"],
+         withCredentials: true,
       });
       console.log("Socket connected");
     }
