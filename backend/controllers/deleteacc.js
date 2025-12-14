@@ -1,5 +1,5 @@
 const Messages = require("../models/Messages");
-const User = require("../models/user")
+const User = require("../models/User")
 
 exports.deleteAccount = async (req, res) => {
     try{ 
