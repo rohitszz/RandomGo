@@ -21,7 +21,7 @@ const DashBoard = () => {
   const [isSending, setIsSending] = useState(false);
   const [deleteAccountConfirmation, setDeleteAccountConfirmation] = useState(false);
   const [seen, setSeen ] = useState(false);
-  
+
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
   const typingTimeout = useRef(null);
@@ -156,7 +156,6 @@ const DashBoard = () => {
   useEffect(() => {
     const getUserProfile = async () => {
       try {
-        console.log("fetching user");
         const res = await fetch("https://chatapp-backend-1rq1.onrender.com/api/users/dashboard", {
           method: "GET",
           credentials: "include",
@@ -164,7 +163,6 @@ const DashBoard = () => {
         const fetcheData = await res.json();
         setData(fetcheData);
         setEmail(fetcheData.email);
-         console.log("success");
       } catch (error) {
         console.log("Error fetching user profile", error);
       }
@@ -187,10 +185,9 @@ const DashBoard = () => {
   useEffect(() => {
     if (!email) return;
 
-    if (!socket.current) { 
+    if (!socket.current) {
       socket.current = io("https://chatapp-backend-1rq1.onrender.com", {
         transports: ["websocket"],
-         withCredentials: true,
       });
       console.log("Socket connected");
     }
