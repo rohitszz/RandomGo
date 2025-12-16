@@ -16,6 +16,7 @@ const Home = () => {
     </div>
 
      <div className='flex flex-col items-center justify-center gap-y-10 h-[80%]'>
+         <div className='text-[red] demo'>*make sure you allow third party cookies</div>
       <div className='text-[1.7rem]  p-6 demo'>Demo Login with</div>
     <div className=' '>
       <div className='flex gap-x-6 demo'> 
