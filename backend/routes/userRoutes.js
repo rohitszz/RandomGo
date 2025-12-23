@@ -10,6 +10,7 @@ const  upload = require("../middlewares/upload")
 const { imageUpload } = require("../controllers/imageupload")
 const { deleteAccount} = require("../controllers/deleteacc")
 const { markSeen } = require("../controllers/markseen")
+const { deleteMessage } = require("../controllers/deletemessage")
 
 router.post('/login', login);
 router.post('/signuptoken', signupToken);
@@ -24,6 +25,7 @@ router.post('/userprofilebyid', userprofilebyid);
 router.post('/upload-image', upload.single("image"), imageUpload);
 router.post('/deleteaccount', deleteAccount);
 router.post('/markseen', markSeen);
+router.post('/deletemessage', deleteMessage)
 
 module.exports = router;
      
