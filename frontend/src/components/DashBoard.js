@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { SiDocker } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import { MdDelete } from "react-icons/md";
 
 const DashBoard = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const DashBoard = () => {
   const [isSending, setIsSending] = useState(false);
   const [deleteAccountConfirmation, setDeleteAccountConfirmation] = useState(false);
   const [seen, setSeen ] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(false);
+  const [messageId, setMessageId] = useState(null);
 
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
@@ -76,12 +79,33 @@ const DashBoard = () => {
     setUserProfile(true);
   };
 
+  const deleteMessageHandler = async ( messageId) => {
+    try{
+    const res = await fetch("https://chatapp-backend-1rq1.onrender.com/api/users/deletemessage", {
+      method: "POST", 
+      headers: { "Content-Type": "application/json" },
+      body : JSON.stringify({
+        messageId: messageId,
+       })
+    })
+
+    setMessages((prev) => 
+      prev.filter((msg) => msg._id !== messageId)
+    )
+
+    }
+    catch(error){
+      console.log(error)
+    }
+    setDeleteMessage(false)
+  }
+
 
   useEffect(() => {
     const fetchMessages = async () => {
       if (!email || !userData) return;
       try {
-        const result = await fetch(
+        const result = await fetch( 
           "https://chatapp-backend-1rq1.onrender.com/api/users/messages/getmessages",
           {
             method: "POST",
@@ -276,10 +300,34 @@ const DashBoard = () => {
 
   }
 
+   const fetchMessages = async () => {
+      if (!email || !userData) return;
+      try {
+        const result = await fetch( 
+          "https://chatapp-backend-1rq1.onrender.com/api/users/messages/getmessages",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+              senderId: email,
+              recieverId: userData.email,
+            }),
+          }
+        );
+
+        const data = await result.json();
+        setMessages(data.messages || []);
+      } catch (err) {
+        console.log("Error loading messages", err);
+      }
+    };
+    
+
 
   const sendMessage = async () => {
-    if (isSending) return;
-    if ((!newMessage.trim() && !imageFile) || !userData) return;
+   
+    if ((!newMessage.trim() && !imageFile) || !userData){ return; }
     setIsSending(true);
     let imageUrl = null;
 
@@ -310,7 +358,8 @@ const DashBoard = () => {
       createdAt: new Date().toISOString(),
     };
 
-    if(email !== userData.email){setMessages((prev) => [...prev, messageData]);}
+    
+
 
     socket.current.emit("send-message", messageData);
 
@@ -323,6 +372,9 @@ const DashBoard = () => {
     setTimeout(() => {
       setIsSending(false);
     }, 1000);
+
+      
+      fetchMessages();
   
    setNewMessage("");
   setImageFile(null);
@@ -408,22 +460,40 @@ const DashBoard = () => {
                     }`}
                   >
                      {message.image && (<img src={message.image} alt="chat-img" className="max-w-[200px] rounded-lg mb-1"/> )}
-                     {message.text && <span>{message.text}</span>}
+                     {message.text && <span>{message.text}</span>  }
+                     
 
-
-                     <div className="text-[7px] h-[6px] text-gray-300 text-right">
+                     <div className="text-[7px] h-[6px] flex flex-row gap-1 justify-end text-gray-300 text-right">
+                     
                            {formatTime(message.createdAt)}
                               {message.senderId === email && (
                         <span className="ml-1 text-[7px]">
                        {message.seen || seen ? "✓✓" : "✓"} 
+                       
                            </span>
+                           
                            )}
-                           </div>
+                           { message._id !== messageId && 
+                           <button onClick={() => {setDeleteMessage(true); setTimeout( () => {setDeleteMessage(false); setMessageId(null)}, 2000); setMessageId(message._id) } }>
+                            <MdDelete className="text-[10px] " />
+                           </button>  }
+
+                           {
+                            deleteMessage &&  message.senderId === email && message._id === messageId && 
+                            <button onClick={() => deleteMessageHandler(message._id)}>
+                               <MdDelete className="text-[10px] text-[red]" /> 
+                            </button>
+                           }
+                           </div>                    
                   </div>
                 ))}
+                   
               {isTyping && <div className="text-[10px] text-gray-300 ml-2">Typing...</div>}
               <div ref={messagesEndRef} />
+               
             </div>
+
+            
 
             <div className="flex items-center justify-center mx-auto h-[2.6rem]">
           { !imageFile && <input
